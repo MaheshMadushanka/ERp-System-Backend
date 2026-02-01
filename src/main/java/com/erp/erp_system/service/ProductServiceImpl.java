@@ -6,16 +6,12 @@ import com.erp.erp_system.entity.ProductEntity;
 import com.erp.erp_system.exception.BadRequestException;
 import com.erp.erp_system.repository.CategoryRepository;
 import com.erp.erp_system.repository.ProductRepository;
-import com.erp.erp_system.response.ApiResponse;
 import com.erp.erp_system.utils.QRCodeGenerator;
 
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.nio.file.OpenOption;
 import java.util.List;
 
 @Service
