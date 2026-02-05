@@ -4,6 +4,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.erp.erp_system.dto.DamageRequestDTO;
+import com.erp.erp_system.entity.DamageEntity;
+import com.erp.erp_system.response.ApiResponse;
 import com.erp.erp_system.service.DamageService;
 
 import lombok.*;
@@ -16,11 +18,13 @@ public class DamageController {
     private final DamageService damageService;
 
     @PostMapping
-    public ResponseEntity<?> recordDamage(
+    public ResponseEntity<ApiResponse<DamageEntity>> recordDamage(
             @RequestBody DamageRequestDTO request) {
 
-        return ResponseEntity.ok(
-                damageService.recordDamage(request));
+        return ResponseEntity.ok(new ApiResponse<>(
+                true,
+                "Damage recorded successfully",
+                damageService.recordDamage(request)));
     }
 }
 

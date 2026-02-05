@@ -1,15 +1,14 @@
 package com.erp.erp_system.dto;
 
+import java.util.List;
+
+import lombok.*;
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class DamageRequestDTO {
 
-    public String getReason() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getReason'");
-    }
-
-    public DamageItemDTO[] getItems() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getItems'");
-    }
+    private String reason;
+    private List<DamageItemDTO> items;
 
 }

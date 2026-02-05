@@ -1,4 +1,5 @@
 package com.erp.erp_system.entity;
+
 import jakarta.persistence.*;
 import lombok.*;
 @Getter

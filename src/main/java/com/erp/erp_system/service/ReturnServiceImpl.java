@@ -4,6 +4,8 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.jspecify.annotations.Nullable;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import com.erp.erp_system.dto.ReturnItemDTO;
@@ -20,11 +22,12 @@ import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-public class ReturnServiceImpl {
+public class ReturnServiceImpl implements ReturnService {
 
     private final OrderRepository orderRepo;
     private final ProductRepository productRepo;
     private final ReturnRepository returnRepo;
+    private final ModelMapper modelMapper;
 
     public ReturnEntity processReturn(ReturnRequestDTO request) {
 
@@ -61,5 +64,19 @@ public class ReturnServiceImpl {
         returnEntity.setRefundAmount(refundTotal);
 
         return returnRepo.save(returnEntity);
+    }
+
+    @Override
+    public List<ReturnRequestDTO> getAllReturns() {
+        return returnRepo.findAll()
+            .stream()
+            .map(returnEntity -> modelMapper.map(returnEntity, ReturnRequestDTO.class))
+            .toList();
+    }
+
+    @Override
+    public @Nullable Object getReturnById(Long id) {
+        return returnRepo.findById(id)
+                .orElseThrow(() -> new RuntimeException("Return not found"));
     }
 }

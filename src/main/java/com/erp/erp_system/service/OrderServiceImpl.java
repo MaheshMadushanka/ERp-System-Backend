@@ -3,6 +3,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import com.erp.erp_system.dto.OrderItemDTO;
@@ -10,17 +11,23 @@ import com.erp.erp_system.dto.OrderRequestDTO;
 import com.erp.erp_system.entity.OrderEntity;
 import com.erp.erp_system.entity.OrderItemEntity;
 import com.erp.erp_system.entity.ProductEntity;
+import com.erp.erp_system.exception.BadRequestException;
 import com.erp.erp_system.repository.OrderRepository;
 import com.erp.erp_system.repository.ProductRepository;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class OrderServiceImpl implements OrderService {
+
     private final OrderRepository orderRepo;
     private final ProductRepository productRepo;
+    private final ModelMapper modelMapper;
 
+    @Override
     public OrderEntity createOrder(OrderRequestDTO request) {
 
         OrderEntity order = new OrderEntity();
@@ -34,15 +41,13 @@ public class OrderServiceImpl implements OrderService {
 
             ProductEntity product = productRepo.findById(dto.getProductId())
                     .orElseThrow(() ->
-                            new RuntimeException("Product not found"));
+                            new BadRequestException("Product not found"));
 
-            // ✅ Stock check
             if (product.getQuantity() < dto.getQuantity()) {
-                throw new RuntimeException(
+                throw new BadRequestException(
                         "Not enough stock for " + product.getName());
             }
 
-            // ✅ Reduce stock
             product.setQuantity(
                     product.getQuantity() - dto.getQuantity());
             productRepo.save(product);
@@ -57,7 +62,22 @@ public class OrderServiceImpl implements OrderService {
         }
 
         order.setItems(itemEntities);
+        orderRepo.save(order);
+        return order;
+    }
 
-        return orderRepo.save(order);
+
+    @Override
+    public OrderEntity getOrderById(Long id) {
+        return orderRepo.findById(id)
+                .orElseThrow(() -> new RuntimeException("Order not found"));
+    }
+
+    @Override
+    public List<OrderRequestDTO> getAllOrders() {
+        return orderRepo.findAll()
+                .stream()
+                .map(order -> modelMapper.map(order, OrderRequestDTO.class))
+                .toList();
     }
 }

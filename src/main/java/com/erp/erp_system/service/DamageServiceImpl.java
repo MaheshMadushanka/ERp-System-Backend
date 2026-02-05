@@ -11,6 +11,7 @@ import com.erp.erp_system.dto.DamageRequestDTO;
 import com.erp.erp_system.entity.DamageEntity;
 import com.erp.erp_system.entity.DamageItemEntity;
 import com.erp.erp_system.entity.ProductEntity;
+import com.erp.erp_system.exception.BadRequestException;
 import com.erp.erp_system.repository.DamageRepository;
 import com.erp.erp_system.repository.ProductRepository;
 
@@ -36,10 +37,10 @@ public class   DamageServiceImpl implements DamageService {
         for (DamageItemDTO dto : request.getItems()) {
 
             ProductEntity product = productRepo.findById(dto.getProductId())
-                    .orElseThrow(() -> new RuntimeException("Product not found"));
+                    .orElseThrow(() -> new BadRequestException("Product not found"));
 
             if (product.getQuantity() < dto.getQuantity()) {
-                throw new RuntimeException("Not enough stock");
+                throw new BadRequestException("Not enough stock");
             }
 
             // ✅ reduce stock

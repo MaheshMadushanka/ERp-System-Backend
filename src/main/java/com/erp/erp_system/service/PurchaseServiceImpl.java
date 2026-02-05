@@ -12,6 +12,7 @@ import com.erp.erp_system.entity.ProductEntity;
 import com.erp.erp_system.entity.PurchaseEntity;
 import com.erp.erp_system.entity.PurchaseItemEntity;
 import com.erp.erp_system.repository.ProductRepository;
+import com.erp.erp_system.repository.PurchaseRepository;
 
 import lombok.RequiredArgsConstructor;
 
