@@ -59,4 +59,8 @@ public class   DamageServiceImpl implements DamageService {
 
         return damageRepo.save(damage);
     }
+    @Override
+public List<DamageEntity> getAllDamages() {
+    return damageRepo.findAll();
+}
 }

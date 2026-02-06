@@ -1,5 +1,7 @@
 package com.erp.erp_system.controller;
 
+import java.util.List;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,6 +27,14 @@ public class DamageController {
                 true,
                 "Damage recorded successfully",
                 damageService.recordDamage(request)));
+    }
+     @GetMapping
+    public ResponseEntity<ApiResponse<List<DamageEntity>>> getAllDamages() {
+
+        return ResponseEntity.ok(new ApiResponse<>(
+                true,
+                "Damages fetched successfully",
+                damageService.getAllDamages()));
     }
 }
 
